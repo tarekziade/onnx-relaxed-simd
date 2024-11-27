@@ -21,6 +21,8 @@ async function generate(relaxed = False) {
 
   env.allowLocalModels = false;
   env.backends.onnx.wasm.wasmPaths = "http://localhost:8000/";
+  env.backends.onnx.debug = true;
+  env.backends.onnx.logLevel = 'verbose';
 
   if (relaxed) {
     env.backends.onnx.wasm.relaxedSimd = true;

@@ -22,15 +22,15 @@ $(ONNX_DIR): $(PYTHON_BIN)
 build_normal: $(ONNX_DIR)
 	cd $(ONNX_DIR) && ../$(PYTHON_BIN) ./tools/ci_build/build.py $(BUILD_FLAGS) \
 		--build_dir $(BUILD_DIR)
-	cp $(ONNX_DIR)/$(BUILD_DIR)/Debug/*.wasm .
-	cp $(ONNX_DIR)/$(BUILD_DIR)/Debug/*.mjs .
+	cp $(ONNX_DIR)/$(BUILD_DIR)/Release/*.wasm .
+	cp $(ONNX_DIR)/$(BUILD_DIR)/Release/*.mjs .
 
 build_relaxed: $(ONNX_DIR)
 	cd $(ONNX_DIR) && ../$(PYTHON_BIN) ./tools/ci_build/build.py $(BUILD_FLAGS) \
 		--enable_wasm_relaxed_simd \
 		--build_dir $(BUILD_DIR)
-	cp $(ONNX_DIR)/$(BUILD_DIR)/Debug/*.wasm .
-	cp $(ONNX_DIR)/$(BUILD_DIR)/Debug/*.mjs .
+	cp $(ONNX_DIR)/$(BUILD_DIR)/Release/*.wasm .
+	cp $(ONNX_DIR)/$(BUILD_DIR)/Release/*.mjs .
 
 clean:
 	rm -rf $(ONNX_DIR) $(BUILD_DIR) *.wasm *.mjs
