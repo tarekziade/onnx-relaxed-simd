@@ -1,61 +1,46 @@
 const outputDiv = document.getElementById('output');
+const distilbart = document.getElementById('distilbart');
+const qwen = document.getElementById('qwen');
+const distilbartB = document.getElementById('distilbart-baseline');
+const qwenB = document.getElementById('qwen-baseline');
 
-const text = 'The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building, ' +
-  'and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. ' +
-  'During its construction, the Eiffel Tower surpassed the Washington Monument to become the tallest ' +
-  'man-made structure in the world, a title it held for 41 years until the Chrysler Building in New ' +
-  'York City was finished in 1930. It was the first structure to reach a height of 300 metres. Due to ' +
-  'the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the ' +
-  'Chrysler Building by 5.2 metres (17 ft). Excluding transmitters, the Eiffel Tower is the second ' +
-  'tallest free-standing structure in France after the Millau Viaduct.';
+const input = document.getElementById('input');
 
+// Create the worker
+const worker = new Worker('worker.js');
 
-async function generate(relaxed = False) {
+worker.onmessage = (event) => {
+  const { type, payload } = event.data;
 
-  let pipeline, env;
-  if (relaxed) {
-    ({ pipeline, env } = await import("./transformers-relaxed-dev.js"));
-  } else {
-    ({ pipeline, env } = await import("./transformers-dev.js"));
+  if (type === 'status') {
+    outputDiv.textContent = payload;
+  } else if (type === 'result') {
+    const { summary, timeSpent } = payload;
+    outputDiv.textContent = `
+            Summary: ${summary}
+            Time spent: ${timeSpent} ms
+        `;
   }
+};
 
-  env.allowLocalModels = false;
-  env.backends.onnx.wasm.wasmPaths = "http://localhost:8000/";
-  env.backends.onnx.debug = true;
-  env.backends.onnx.logLevel = 'verbose';
 
-  if (relaxed) {
-    env.backends.onnx.wasm.relaxedSimd = true;
-  }
+worker.onerror = (error) => {
+  outputDiv.textContent = `Error: ${error.message}`;
+};
 
-  let generator = null;
 
-  outputDiv.textContent = "Creating a new pipeline";
-  try {
-    generator = await pipeline('summarization', 'Xenova/distilbart-cnn-6-6');
-  } catch (e) {
-    outputDiv.textContent = e;
-  }
-  outputDiv.textContent = "Done";
+distilbartB.addEventListener('click', () => {
+  worker.postMessage({ action: 'generate', qwen: false, baseline: true, input: input.value });
+});
 
-  outputDiv.textContent = "Running";
-  const startTime = Date.now();
+qwenB.addEventListener('click', () => {
+  worker.postMessage({ action: 'generate', qwen: true, baseline: true, input: input.value });
+});
 
-  const output = await generator(text, {
-    max_new_tokens: 100,
-  });
-  const endTime = Date.now();
-  const timeSpent = (endTime - startTime);
+distilbart.addEventListener('click', () => {
+  worker.postMessage({ action: 'generate', qwen: false, baseline: false, input: input.value });
+});
 
-  outputDiv.textContent = `
-    Summary: ${output[0]?.summary_text || "No summary generated."}
-    Time spent: ${timeSpent} ms
-  `;
-
-}
-
-const runButton = document.getElementById('run');
-runButton.addEventListener('click', () => generate(false));
-
-const relaxedRunButton = document.getElementById('relaxedRun');
-relaxedRunButton.addEventListener('click', () => generate(true));
+qwen.addEventListener('click', () => {
+  worker.postMessage({ action: 'generate', qwen: true, baseline: false, input: input.value });
+});

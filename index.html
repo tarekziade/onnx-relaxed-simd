@@ -5,19 +5,58 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin"/>
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp"/>
 </head>
 
 <body>
     <main class="container">
+      <textarea id="input" style="width: 100%; height: 200px; font-family: Arial, sans-serif;">
+
+The exploration of space has always been a subject of fascination and curiosity for humanity. 
+From the earliest  stargazers mapping the heavens to modern astronomers utilizing cutting-edge telescopes, the quest to 
+understand the  cosmos has driven technological and scientific advancement. In the 20th century, the space race between 
+the United States and the Soviet Union culminated in humanity's first steps on the moon, marking a new era of space 
+exploration.
+
+Today, space exploration is no longer confined to government agencies. Private companies, such as SpaceX and Blue 
+Origin, are pioneering new methods of space travel, with ambitions ranging from commercial space tourism to colonizing 
+Mars. These ventures have sparked debates about the ethical, environmental, and economic implications of privatizing 
+space.
+
+The potential benefits of space exploration are vast. Satellites have revolutionized communication, weather forecasting, 
+and navigation. Space-based observations have provided critical data for understanding climate change and protecting 
+Earth’s ecosystems. Moreover, the possibility of mining asteroids for rare minerals could address resource shortages on 
+our planet.
+
+However, the challenges are equally significant. Space travel remains extraordinarily expensive and risky. The harsh 
+environment of space poses threats to human health, including exposure to radiation and the psychological effects of 
+prolonged isolation. Additionally, the accumulation of space debris presents a growing hazard to both current and future 
+missions.
+
+International collaboration has proven to be a powerful tool in overcoming some of these challenges. The International 
+Space Station (ISS) serves as a testament to what can be achieved when nations work together, pooling resources and 
+expertise. Future projects, such as the planned Lunar Gateway and Mars missions, highlight the importance of cooperative 
+efforts in pushing the boundaries of human capability.
+
+As humanity looks to the stars, questions about our role in the universe arise. What responsibilities do we have as 
+stewards of our own planet and potential explorers of others? How can we ensure that space exploration benefits all of 
+humanity and not just a privileged few?
+
+The journey into space is a reflection of our innate desire to explore and understand. It challenges us to innovate, to 
+dream, and to collaborate. While the road ahead is fraught with difficulties, the potential rewards—both tangible and 
+intangible—make the endeavor worthwhile. With careful planning, international cooperation, and ethical considerations, 
+space exploration can continue to inspire and benefit humanity for generations to come.`
+
+      </textarea>
       <div id="output" style="margin-top: 20px; font-family: Arial, sans-serif;">
-        Loading...
-
-
-
+        Pick a model and run the inference.
       </div>
 
-      <button id="run">Run with normal SIMD</button>
-      <button id="relaxedRun">Run with relaxed SIMD</button>
+      <button id="distilbart">Run with distilbart-cnn-6 (optimized)</button>
+      <button id="qwen">Run with Qwen (optimized)</button>
+      <button id="distilbart-baseline">Run with distilbart-cnn-6 (baseline)</button>
+      <button id="qwen-baseline">Run with Qwen (baseline)</button>
     </main>
     <script src="index.js" type="module"></script>
 </body>

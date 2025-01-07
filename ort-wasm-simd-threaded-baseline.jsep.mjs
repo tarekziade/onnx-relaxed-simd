@@ -631,13 +631,13 @@ var dataURIPrefix = "data:application/octet-stream;base64,";
 
 function findWasmBinary() {
  if (Module["locateFile"]) {
-  var f = "ort-wasm-simd-threaded.jsep.wasm";
+  var f = "ort-wasm-simd-threaded-baseline.jsep.wasm";
   if (!isDataURI(f)) {
    return locateFile(f);
   }
   return f;
  }
- return new URL("ort-wasm-simd-threaded.jsep.wasm", import.meta.url).href;
+ return new URL("ort-wasm-simd-threaded-baseline.jsep.wasm", import.meta.url).href;
 }
 
 var wasmBinaryFile;
@@ -2369,12 +2369,6 @@ var __tzset_js = function(timezone, daylight, std_name, dst_name) {
  }
 };
 
-/** @type {function(...*):?} */ function _dequantize_linear() {
- abort("missing function: dequantize_linear");
-}
-
-_dequantize_linear.stub = true;
-
 var readEmAsmArgsArray = [];
 
 var readEmAsmArgs = (sigPtr, buf) => {
@@ -2602,12 +2596,6 @@ var _environ_sizes_get = function(penviron_count, penviron_buf_size) {
  GROWABLE_HEAP_U32()[((penviron_buf_size) >>> 2) >>> 0] = bufSize;
  return 0;
 };
-
-/** @type {function(...*):?} */ function _f32_multiply() {
- abort("missing function: f32_multiply");
-}
-
-_f32_multiply.stub = true;
 
 function _fd_close(fd) {
  if (ENVIRONMENT_IS_PTHREAD) return proxyToMainThread(20, 0, 1, fd);
@@ -3158,7 +3146,6 @@ function assignWasmImports() {
   /** @export */ _mmap_js: __mmap_js,
   /** @export */ _munmap_js: __munmap_js,
   /** @export */ _tzset_js: __tzset_js,
-  /** @export */ dequantize_linear: _dequantize_linear,
   /** @export */ emscripten_asm_const_int: _emscripten_asm_const_int,
   /** @export */ emscripten_asm_const_ptr: _emscripten_asm_const_ptr,
   /** @export */ emscripten_check_blocking_allowed: _emscripten_check_blocking_allowed,
@@ -3175,7 +3162,6 @@ function assignWasmImports() {
   /** @export */ environ_get: _environ_get,
   /** @export */ environ_sizes_get: _environ_sizes_get,
   /** @export */ exit: _exit,
-  /** @export */ f32_multiply: _f32_multiply,
   /** @export */ fd_close: _fd_close,
   /** @export */ fd_read: _fd_read,
   /** @export */ fd_seek: _fd_seek,
